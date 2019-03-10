@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography;
 
 namespace Drivers
 {
@@ -36,13 +37,19 @@ namespace Drivers
                 "Sergey Sirotkin, Williams-Mercedes"
             };
 
-            var random = new Random();
+            var provider = new RNGCryptoServiceProvider();
+
             int listsRequired = (total - 1) / drivers.Length + 1;
 
             var driverList = new List<string>();
             for (int i = 0; i < listsRequired; i++)
             {
-                driverList.AddRange(drivers.OrderBy(x => random.Next()));
+                driverList.AddRange(drivers.OrderBy(x =>
+                {
+                    var bytes = new byte[4];
+                    provider.GetBytes(bytes);
+                    return BitConverter.ToUInt32(bytes, 0);
+                }));
             }
 
             // Final list
