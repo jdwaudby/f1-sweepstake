@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Results", "Results\Results.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Drivers", "Drivers\Drivers.csproj", "{84EB9D85-BD88-4F76-8831-92E9E9AE4391}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ergast.Library", "Ergast.Library\Ergast.Library.csproj", "{EE6D6963-22DA-4D08-8EB0-D145ED00BFD7}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{84EB9D85-BD88-4F76-8831-92E9E9AE4391}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{84EB9D85-BD88-4F76-8831-92E9E9AE4391}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{84EB9D85-BD88-4F76-8831-92E9E9AE4391}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EE6D6963-22DA-4D08-8EB0-D145ED00BFD7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EE6D6963-22DA-4D08-8EB0-D145ED00BFD7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EE6D6963-22DA-4D08-8EB0-D145ED00BFD7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EE6D6963-22DA-4D08-8EB0-D145ED00BFD7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

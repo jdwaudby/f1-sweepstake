@@ -1,45 +1,43 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
+using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Security.Cryptography;
+using System.Threading.Tasks;
+using Ergast.Library;
+using Newtonsoft.Json;
 
 namespace Drivers
 {
     internal class Program
     {
-        private static void Main()
+        private static readonly HttpClient Client = new HttpClient { BaseAddress = new Uri("https://ergast.com/api/f1/") };
+        private static readonly RNGCryptoServiceProvider Provider = new RNGCryptoServiceProvider();
+
+        private static async Task Main()
         {
             Console.WriteLine("Enter number of participants:");
             string input = Console.ReadLine();
-
             int total = int.Parse(input);
 
-            string[] drivers = {
-                "Sebastian Vettel, Ferrari",
-                "Kimi Räikkönen, Ferrari",
-                "Sergio Pérez, Force India-Mercedes",
-                "Esteban Ocon, Force India-Mercedes",
-                "Romain Grosjean, Haas-Ferrari",
-                "Kevin Magnussen, Haas-Ferrari",
-                "Stoffel Vandoorne, McLaren-Renault",
-                "Fernando Alonso, McLaren-Renault",
-                "Lewis Hamilton, Mercedes",
-                "Valtteri Bottas, Mercedes",
-                "Daniel Ricciardo, Red Bull Racing-TAG Heuer",
-                "Max Verstappen, Red Bull Racing-TAG Heuer",
-                "Nico Hülkenberg, Renault",
-                "Carlos Sainz Jr., Renault",
-                "Marcus Ericsson, Sauber-Ferrari",
-                "Charles Leclerc, Sauber-Ferrari",
-                "Pierre Gasly, Scuderia Toro Rosso-Honda",
-                "Brendon Hartley, Scuderia Toro Rosso-Honda",
-                "Lance Stroll, Williams-Mercedes",
-                "Sergey Sirotkin, Williams-Mercedes"
-            };
+            Console.WriteLine("Enter current round number:");
+            input = Console.ReadLine();
+            int round = int.Parse(input);
 
-            var provider = new RNGCryptoServiceProvider();
+            string constructorsJson = await Client.GetStringAsync($"current/{round}/constructors.json");
+            var constructors = JsonConvert.DeserializeObject<RootObject>(constructorsJson).MRData.ConstructorTable.Constructors;
 
-            int listsRequired = (total - 1) / drivers.Length + 1;
+            var drivers = new List<string>();
+            foreach (Constructor constructor in constructors)
+            {
+                string driversJson = await Client.GetStringAsync($"current/{round}/constructors/{constructor.ConstructorId}/drivers.json");
+                var constructorDrivers = JsonConvert.DeserializeObject<RootObject>(driversJson).MRData.DriverTable.Drivers.Select(driver => $"{driver.GivenName} {driver.FamilyName}, {constructor.Name}");
+                drivers.AddRange(constructorDrivers);
+            }
+
+            int listsRequired = (total - 1) / drivers.Count + 1;
 
             var driverList = new List<string>();
             for (int i = 0; i < listsRequired; i++)
@@ -47,7 +45,7 @@ namespace Drivers
                 driverList.AddRange(drivers.OrderBy(x =>
                 {
                     var bytes = new byte[4];
-                    provider.GetBytes(bytes);
+                    Provider.GetBytes(bytes);
                     return BitConverter.ToUInt32(bytes, 0);
                 }));
             }
