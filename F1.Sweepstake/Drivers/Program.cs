@@ -29,17 +29,17 @@ namespace Drivers
             string constructorsJson = await Client.GetStringAsync($"current/{round}/constructors.json");
             var constructors = JsonConvert.DeserializeObject<RootObject>(constructorsJson).MRData.ConstructorTable.Constructors;
 
-            var drivers = new List<string>();
+            var drivers = new List<DriverConstructor>();
             foreach (Constructor constructor in constructors)
             {
                 string driversJson = await Client.GetStringAsync($"current/{round}/constructors/{constructor.ConstructorId}/drivers.json");
-                var constructorDrivers = JsonConvert.DeserializeObject<RootObject>(driversJson).MRData.DriverTable.Drivers.Select(driver => $"{driver.GivenName} {driver.FamilyName}, {constructor.Name}");
+                var constructorDrivers = JsonConvert.DeserializeObject<RootObject>(driversJson).MRData.DriverTable.Drivers.Select(driver => new DriverConstructor { Driver = driver, Constructor = constructor });
                 drivers.AddRange(constructorDrivers);
             }
 
             int listsRequired = (total - 1) / drivers.Count + 1;
 
-            var driverList = new List<string>();
+            var driverList = new List<DriverConstructor>();
             for (int i = 0; i < listsRequired; i++)
             {
                 driverList.AddRange(drivers.OrderBy(x =>
@@ -51,9 +51,9 @@ namespace Drivers
             }
 
             // Final list
-            foreach (var item in driverList.Take(total).Select((driver, i) => new { index = i + 1, driver }))
+            foreach (var item in driverList.Take(total).Select((driver, i) => new { Index = i + 1, driver.Driver, driver.Constructor }))
             {
-                Console.WriteLine($"{item.index} {item.driver}");
+                Console.WriteLine($"{item.Index} {item.Driver.GivenName} {item.Driver.FamilyName}, {item.Constructor.Name}");
             }
         }
     }
