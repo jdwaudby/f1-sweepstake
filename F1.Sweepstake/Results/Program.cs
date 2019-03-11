@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Results
+namespace F1.Sweepstake.Results
 {
     internal class Program
     {

@@ -1,15 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
-using System.Net;
 using System.Net.Http;
-using System.Net.Http.Headers;
 using System.Security.Cryptography;
 using System.Threading.Tasks;
-using Ergast.Library;
+using F1.Sweepstake.Domain.Models;
+using F1.Sweepstake.Domain.Models.Ergast;
 using Newtonsoft.Json;
 
-namespace Drivers
+namespace F1.Sweepstake.Drivers
 {
     internal class Program
     {
@@ -18,12 +18,15 @@ namespace Drivers
 
         private static async Task Main()
         {
-            Console.WriteLine("Enter number of participants:");
-            string input = Console.ReadLine();
-            int total = int.Parse(input);
+            List<Player> players;
+            using (var reader = new StreamReader("players.json"))
+            {
+                string playersJson = reader.ReadToEnd();
+                players = JsonConvert.DeserializeObject<List<Player>>(playersJson);
+            }
 
             Console.WriteLine("Enter current round number:");
-            input = Console.ReadLine();
+            string input = Console.ReadLine();
             int round = int.Parse(input);
 
             string constructorsJson = await Client.GetStringAsync($"current/{round}/constructors.json");
@@ -37,23 +40,23 @@ namespace Drivers
                 drivers.AddRange(constructorDrivers);
             }
 
-            int listsRequired = (total - 1) / drivers.Count + 1;
-
             var driverList = new List<DriverConstructor>();
-            for (int i = 0; i < listsRequired; i++)
+            driverList.AddRange(drivers.OrderBy(x =>
             {
-                driverList.AddRange(drivers.OrderBy(x =>
-                {
-                    var bytes = new byte[4];
-                    Provider.GetBytes(bytes);
-                    return BitConverter.ToUInt32(bytes, 0);
-                }));
+                var bytes = new byte[4];
+                Provider.GetBytes(bytes);
+                return BitConverter.ToUInt32(bytes, 0);
+            }));
+
+            for (int i = 0; i < players.Count; i++)
+            {
+                players[i].Assignment = driverList[i];
             }
 
             // Final list
-            foreach (var item in driverList.Take(total).Select((driver, i) => new { Index = i + 1, driver.Driver, driver.Constructor }))
+            foreach (Player player in players)
             {
-                Console.WriteLine($"{item.Index} {item.Driver.GivenName} {item.Driver.FamilyName}, {item.Constructor.Name}");
+                Console.WriteLine($"{player.PlayerId} {player.GivenName} {player.FamilyName} - {player.Assignment.Driver.PermanentNumber} {player.Assignment.Driver.GivenName} {player.Assignment.Driver.FamilyName}, {player.Assignment.Constructor.Name}");
             }
         }
     }

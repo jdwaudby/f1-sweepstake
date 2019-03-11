@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using F1.Sweepstake.Domain.Models.Ergast;
 
-namespace Ergast.Library
+namespace F1.Sweepstake.Domain.Models
 {
     public class DriverConstructor
     {

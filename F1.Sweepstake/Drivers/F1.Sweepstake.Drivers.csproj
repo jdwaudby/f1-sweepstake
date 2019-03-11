@@ -10,7 +10,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Ergast.Library\Ergast.Library.csproj" />
+    <ProjectReference Include="..\F1.Sweepstake.Domain\F1.Sweepstake.Domain.csproj" />
   </ItemGroup>
 
 </Project>

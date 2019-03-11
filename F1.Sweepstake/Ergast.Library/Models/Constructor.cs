@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Ergast.Library
+﻿namespace F1.Sweepstake.Ergast.Models
 {
     public class Constructor
     {

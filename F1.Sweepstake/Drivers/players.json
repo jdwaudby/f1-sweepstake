@@ -1,0 +1,52 @@
+[
+  {
+    "playerId": 1,
+    "givenName": "Judy",
+    "familyName": "Keller"
+  },
+  {
+    "playerId": 2,
+    "givenName": "Bruce",
+    "familyName": "Powell"
+  },
+  {
+    "playerId": 3,
+    "givenName": "Dominic",
+    "familyName": "Murray"
+  },
+  {
+    "playerId": 4,
+    "givenName": "Noel",
+    "familyName": "Hart"
+  },
+  {
+    "playerId": 5,
+    "givenName": "Cristina",
+    "familyName": "Larson"
+  },
+  {
+    "playerId": 6,
+    "givenName": "Bob",
+    "familyName": "Sanchez"
+  },
+  {
+    "playerId": 7,
+    "givenName": "Malcolm",
+    "familyName": "Day"
+  },
+  {
+    "playerId": 8,
+    "givenName": "Brendan",
+    "familyName": "Rodriquez"
+  },
+  {
+    "playerId": 9,
+    "givenName": "Jeannette",
+    "familyName": "French"
+  },
+  {
+    "playerId": 10,
+    "givenName": "Harold",
+    "familyName": "Stokes"
+  }
+]

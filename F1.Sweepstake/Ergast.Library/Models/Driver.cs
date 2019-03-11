@@ -1,4 +1,4 @@
-﻿namespace Ergast.Library
+﻿namespace F1.Sweepstake.Ergast.Models
 {
     public class Driver
     {

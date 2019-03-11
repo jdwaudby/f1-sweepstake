@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Ergast.Library
+namespace F1.Sweepstake.Ergast.Models
 {
     public class DriverTable
     {
