@@ -36,16 +36,18 @@ namespace F1.Sweepstake.Web.Controllers
 
         // POST api/drivers/assign
         [HttpPost("assign")]
-        public ActionResult<IEnumerable<Player>> Assign([FromBody] IEnumerable<Player> players)
+        public async Task<ActionResult<IEnumerable<Player>>> Assign([FromBody] IEnumerable<Player> players)
         {
-            return _driverService.Assign(players).ToList();
+            players = await _driverService.Assign(players);
+            return players.ToList();
         }
 
         // POST api/drivers/round/5/assign
         [HttpPost("round/{round}/assign")]
-        public ActionResult<IEnumerable<Player>> Assign(int round, [FromBody] IEnumerable<Player> players)
+        public async Task<ActionResult<IEnumerable<Player>>> Assign(int round, [FromBody] IEnumerable<Player> players)
         {
-            return _driverService.Assign(round, players).ToList();
+            players = await _driverService.Assign(round, players);
+            return players.ToList();
         }
     }
 }

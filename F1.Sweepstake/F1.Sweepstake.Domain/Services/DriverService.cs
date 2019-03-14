@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
+using System.Security.Cryptography;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 
@@ -12,6 +13,7 @@ namespace F1.Sweepstake.Domain.Services
     public class DriverService : IDriverService
     {
         private static readonly HttpClient Client = new HttpClient { BaseAddress = new Uri("https://ergast.com/api/f1/") };
+        private static readonly RNGCryptoServiceProvider Provider = new RNGCryptoServiceProvider();
 
         public async Task<IEnumerable<Driver>> GetAll()
         {
@@ -59,14 +61,46 @@ namespace F1.Sweepstake.Domain.Services
             return drivers;
         }
 
-        public IEnumerable<Player> Assign(IEnumerable<Player> players)
+        public async Task<IEnumerable<Player>> Assign(IEnumerable<Player> players)
         {
-            throw new NotImplementedException();
+            var drivers = await GetAll();
+
+            var driverList = new List<Driver>();
+            driverList.AddRange(drivers.OrderBy(x =>
+            {
+                var bytes = new byte[4];
+                Provider.GetBytes(bytes);
+                return BitConverter.ToUInt32(bytes, 0);
+            }));
+
+            var playerList = players.ToList();
+            for (int i = 0; i < playerList.Count; i++)
+            {
+                playerList[i].Assignment = driverList[i];
+            }
+
+            return playerList;
         }
 
-        public IEnumerable<Player> Assign(int round, IEnumerable<Player> players)
+        public async Task<IEnumerable<Player>> Assign(int round, IEnumerable<Player> players)
         {
-            throw new NotImplementedException();
+            var drivers = await GetAll(round);
+
+            var driverList = new List<Driver>();
+            driverList.AddRange(drivers.OrderBy(x =>
+            {
+                var bytes = new byte[4];
+                Provider.GetBytes(bytes);
+                return BitConverter.ToUInt32(bytes, 0);
+            }));
+
+            var playerList = players.ToList();
+            for (int i = 0; i < playerList.Count; i++)
+            {
+                playerList[i].Assignment = driverList[i];
+            }
+
+            return playerList;
         }
     }
 }
