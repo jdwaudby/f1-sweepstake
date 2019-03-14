@@ -11,18 +11,18 @@ namespace F1.Sweepstake.Domain.Services
 {
     public class DriverService : IDriverService
     {
+        private static readonly HttpClient Client = new HttpClient { BaseAddress = new Uri("https://ergast.com/api/f1/") };
+
         public async Task<IEnumerable<Driver>> GetAll()
         {
-            var client = new HttpClient {BaseAddress = new Uri("https://ergast.com/api/f1/")};
-
-            string constructorsJson = await client.GetStringAsync($"current/constructors.json");
-            var constructors = JsonConvert.DeserializeObject<Domain.Models.Ergast.RootObject>(constructorsJson).MRData.ConstructorTable.Constructors;
+            string constructorsJson = await Client.GetStringAsync($"current/constructors.json");
+            var constructors = JsonConvert.DeserializeObject<Models.Ergast.RootObject>(constructorsJson).MRData.ConstructorTable.Constructors;
 
             var drivers = new List<Driver>();
-            foreach (Domain.Models.Ergast.Constructor constructor in constructors)
+            foreach (Models.Ergast.Constructor constructor in constructors)
             {
-                string driversJson = await client.GetStringAsync($"current/constructors/{constructor.ConstructorId}/drivers.json");
-                var constructorDrivers = JsonConvert.DeserializeObject<Domain.Models.Ergast.RootObject>(driversJson).MRData.DriverTable.Drivers.Select(driver => new Driver
+                string driversJson = await Client.GetStringAsync($"current/constructors/{constructor.ConstructorId}/drivers.json");
+                var constructorDrivers = JsonConvert.DeserializeObject<Models.Ergast.RootObject>(driversJson).MRData.DriverTable.Drivers.Select(driver => new Driver
                 {
                     DriverId = driver.DriverId,
                     PermanentNumber = driver.PermanentNumber,
@@ -36,9 +36,27 @@ namespace F1.Sweepstake.Domain.Services
             return drivers;
         }
 
-        public IEnumerable<Driver> GetAll(int round)
+        public async Task<IEnumerable<Driver>> GetAll(int round)
         {
-            throw new NotImplementedException();
+            string constructorsJson = await Client.GetStringAsync($"current/{round}/constructors.json");
+            var constructors = JsonConvert.DeserializeObject<Models.Ergast.RootObject>(constructorsJson).MRData.ConstructorTable.Constructors;
+
+            var drivers = new List<Driver>();
+            foreach (Models.Ergast.Constructor constructor in constructors)
+            {
+                string driversJson = await Client.GetStringAsync($"current/{round}/constructors/{constructor.ConstructorId}/drivers.json");
+                var constructorDrivers = JsonConvert.DeserializeObject<Models.Ergast.RootObject>(driversJson).MRData.DriverTable.Drivers.Select(driver => new Driver
+                {
+                    DriverId = driver.DriverId,
+                    PermanentNumber = driver.PermanentNumber,
+                    GivenName = driver.GivenName,
+                    FamilyName = driver.FamilyName,
+                    Constructor = constructor
+                });
+                drivers.AddRange(constructorDrivers);
+            }
+
+            return drivers;
         }
 
         public IEnumerable<Player> Assign(IEnumerable<Player> players)

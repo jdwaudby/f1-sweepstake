@@ -7,7 +7,7 @@ namespace F1.Sweepstake.Domain.Services.Interfaces
     public interface IDriverService
     {
         Task<IEnumerable<Driver>> GetAll();
-        IEnumerable<Driver> GetAll(int round);
+        Task<IEnumerable<Driver>> GetAll(int round);
         IEnumerable<Player> Assign(IEnumerable<Player> players);
         IEnumerable<Player> Assign(int round, IEnumerable<Player> players);
     }
