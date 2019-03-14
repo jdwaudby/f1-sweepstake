@@ -4,5 +4,6 @@
     {
         public DriverTable DriverTable { get; set; }
         public ConstructorTable ConstructorTable { get; set; }
+        public RaceTable RaceTable { get; set; }
     }
 }
