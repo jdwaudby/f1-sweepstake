@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using F1.Sweepstake.Domain.Models;
 using F1.Sweepstake.Domain.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
@@ -19,9 +20,10 @@ namespace F1.Sweepstake.Web.Controllers
 
         // GET api/drivers
         [HttpGet()]
-        public ActionResult<IEnumerable<Driver>> Get()
+        public async Task<ActionResult<IEnumerable<Driver>>> Get()
         {
-            return _driverService.GetAll().ToList();
+            var drivers = await _driverService.GetAll();
+            return drivers.ToList();
         }
 
         // GET api/drivers/round/5
