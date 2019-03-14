@@ -2,9 +2,8 @@
 
 namespace F1.Sweepstake.Domain.Models
 {
-    public class DriverConstructor
+    public class Driver : Ergast.Driver
     {
-        public Driver Driver { get; set; }
         public Constructor Constructor { get; set; }
     }
 }

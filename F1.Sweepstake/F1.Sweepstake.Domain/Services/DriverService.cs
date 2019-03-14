@@ -1,9 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using F1.Sweepstake.Domain.Models;
-using F1.Sweepstake.Domain.Models.Ergast;
+﻿using F1.Sweepstake.Domain.Models;
 using F1.Sweepstake.Domain.Services.Interfaces;
+using System;
+using System.Collections.Generic;
 
 namespace F1.Sweepstake.Domain.Services
 {

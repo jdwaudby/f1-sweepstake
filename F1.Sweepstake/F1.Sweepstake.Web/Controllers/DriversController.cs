@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using F1.Sweepstake.Domain.Models;
-using F1.Sweepstake.Domain.Models.Ergast;
 using F1.Sweepstake.Domain.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 

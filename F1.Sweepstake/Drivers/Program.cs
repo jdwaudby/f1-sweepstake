@@ -6,7 +6,6 @@ using System.Net.Http;
 using System.Security.Cryptography;
 using System.Threading.Tasks;
 using F1.Sweepstake.Domain.Models;
-using F1.Sweepstake.Domain.Models.Ergast;
 using Newtonsoft.Json;
 
 namespace F1.Sweepstake.Drivers
@@ -30,17 +29,24 @@ namespace F1.Sweepstake.Drivers
             int round = int.Parse(input);
 
             string constructorsJson = await Client.GetStringAsync($"current/{round}/constructors.json");
-            var constructors = JsonConvert.DeserializeObject<RootObject>(constructorsJson).MRData.ConstructorTable.Constructors;
+            var constructors = JsonConvert.DeserializeObject<Domain.Models.Ergast.RootObject>(constructorsJson).MRData.ConstructorTable.Constructors;
 
-            var drivers = new List<DriverConstructor>();
-            foreach (Constructor constructor in constructors)
+            var drivers = new List<Driver>();
+            foreach (Domain.Models.Ergast.Constructor constructor in constructors)
             {
                 string driversJson = await Client.GetStringAsync($"current/{round}/constructors/{constructor.ConstructorId}/drivers.json");
-                var constructorDrivers = JsonConvert.DeserializeObject<RootObject>(driversJson).MRData.DriverTable.Drivers.Select(driver => new DriverConstructor { Driver = driver, Constructor = constructor });
+                var constructorDrivers = JsonConvert.DeserializeObject<Domain.Models.Ergast.RootObject>(driversJson).MRData.DriverTable.Drivers.Select(driver => new Driver
+                {
+                    DriverId = driver.DriverId,
+                    PermanentNumber = driver.PermanentNumber,
+                    GivenName = driver.GivenName,
+                    FamilyName = driver.FamilyName,
+                    Constructor = constructor
+                });
                 drivers.AddRange(constructorDrivers);
             }
 
-            var driverList = new List<DriverConstructor>();
+            var driverList = new List<Driver>();
             driverList.AddRange(drivers.OrderBy(x =>
             {
                 var bytes = new byte[4];
@@ -56,7 +62,7 @@ namespace F1.Sweepstake.Drivers
             // Final list
             foreach (Player player in players)
             {
-                Console.WriteLine($"{player.PlayerId} {player.GivenName} {player.FamilyName} - {player.Assignment.Driver.PermanentNumber} {player.Assignment.Driver.GivenName} {player.Assignment.Driver.FamilyName}, {player.Assignment.Constructor.Name}");
+                Console.WriteLine($"{player.PlayerId} {player.GivenName} {player.FamilyName} - {player.Assignment.PermanentNumber} {player.Assignment.GivenName} {player.Assignment.FamilyName}, {player.Assignment.Constructor.Name}");
             }
         }
     }

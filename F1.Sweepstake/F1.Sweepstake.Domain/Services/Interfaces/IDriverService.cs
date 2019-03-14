@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using F1.Sweepstake.Domain.Models;
-using F1.Sweepstake.Domain.Models.Ergast;
 
 namespace F1.Sweepstake.Domain.Services.Interfaces
 {
