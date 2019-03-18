@@ -26,18 +26,39 @@ namespace F1.Sweepstake.Domain.Services
 
         public async Task<IEnumerable<Player>> Get(IEnumerable<Player> players)
         {
-            throw new System.NotImplementedException();
+            return await Get("last", players);
         }
 
         public async Task<IEnumerable<Player>> Get(int round, IEnumerable<Player> players)
         {
-            throw new System.NotImplementedException();
+            return await Get(round.ToString(), players);
         }
 
         private static async Task<IEnumerable<Result>> Get(string round)
         {
             string resultsJson = await Client.GetStringAsync($"current/{round}/results.json");
-            return JsonConvert.DeserializeObject<Models.Ergast.RootObject>(resultsJson).MRData.RaceTable.Races.SingleOrDefault()?.Results;
+            return JsonConvert.DeserializeObject<RootObject>(resultsJson).MRData.RaceTable.Races.SingleOrDefault()?.Results;
+        }
+
+        private static async Task<IEnumerable<Player>> Get(string round, IEnumerable<Player> players)
+        {
+            var results = (await Get(round)).ToList();
+
+            players = players.ToList();
+            foreach (Player player in players)
+            {
+                var playerResult = results.Where(result => result.Driver.DriverId == player.Assignment.DriverId).Select(result => new
+                {
+                    Points = Convert.ToInt32(result.Points),
+                    Retirements = Convert.ToInt32(result.Status != "Finished" && !result.Status.StartsWith("+"))
+                }).Single();
+
+                player.Assignment = null;
+                player.Points += playerResult.Points;
+                player.Retirements += playerResult.Retirements;
+            }
+
+            return players.OrderByDescending(player => player.Points);
         }
     }
 }
