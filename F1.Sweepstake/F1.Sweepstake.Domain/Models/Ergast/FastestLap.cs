@@ -3,7 +3,5 @@
     public class FastestLap
     {
         public string Rank { get; set; }
-        public string TimeTime { get; set; }
-        public string TimeMillis { get; set; }
     }
 }
