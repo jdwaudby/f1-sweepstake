@@ -47,13 +47,13 @@ namespace F1.Sweepstake.Domain.Services
             players = players.ToList();
             foreach (Player player in players)
             {
-                var playerResult = results.Where(result => result.Driver.DriverId == player.Assignment.DriverId).Select(result => new
+                var playerResult = results.Where(result => result.Driver.DriverId == player.Driver.DriverId).Select(result => new
                 {
                     Points = Convert.ToInt32(result.Points),
                     Retirements = Convert.ToInt32(result.Status != "Finished" && !result.Status.StartsWith("+"))
                 }).Single();
 
-                player.Assignment = null;
+                player.Driver = null;
                 player.Points += playerResult.Points;
                 player.Retirements += playerResult.Retirements;
             }

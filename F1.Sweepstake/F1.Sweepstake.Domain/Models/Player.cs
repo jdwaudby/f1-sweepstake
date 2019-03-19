@@ -5,7 +5,7 @@
         public int PlayerId { get; set; }
         public string GivenName { get; set; }
         public string FamilyName { get; set; }
-        public Driver Assignment { get; set; }
+        public Driver Driver { get; set; }
         public int Points { get; set; }
         public int Retirements { get; set; }
     }
