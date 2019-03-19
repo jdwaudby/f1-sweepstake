@@ -22,6 +22,7 @@ namespace F1.Sweepstake.Web
         {
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
+            services.AddScoped<IConstructorService, ConstructorService>();
             services.AddScoped<IDriverService, DriverService>();
             services.AddScoped<IResultService, ResultService>();
         }
