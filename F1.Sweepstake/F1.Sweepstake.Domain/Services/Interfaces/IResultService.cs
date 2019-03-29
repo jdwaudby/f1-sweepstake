@@ -7,9 +7,9 @@ namespace F1.Sweepstake.Domain.Services.Interfaces
 {
     public interface IResultService
     {
-        Task<IEnumerable<Result>> Get();
-        Task<IEnumerable<Result>> Get(int round);
-        Task<IEnumerable<Player>> Get(IEnumerable<Player> players);
-        Task<IEnumerable<Player>> Get(int round, IEnumerable<Player> players);
+        //Task<IEnumerable<Result>> Get();
+        //Task<IEnumerable<Result>> Get(int round);
+        //Task<IEnumerable<Player>> Get(IEnumerable<Player> players);
+        //Task<IEnumerable<Player>> Get(int round, IEnumerable<Player> players);
     }
 }

@@ -8,5 +8,6 @@ namespace F1.Sweepstake.Domain.Models
         public int PermanentNumber { get; set; }
         public string GivenName { get; set; }
         public string FamilyName { get; set; }
+        public string Code { get; set; }
     }
 }

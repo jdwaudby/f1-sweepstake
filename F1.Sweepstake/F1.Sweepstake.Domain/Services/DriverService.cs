@@ -32,12 +32,12 @@ namespace F1.Sweepstake.Domain.Services
             return constructors.SelectMany(constructor => constructor.Drivers);
         }
 
-        public async Task<IEnumerable<Player>> Assign(IEnumerable<Player> players)
+        public async Task<IEnumerable<Assignment>> Assign(IEnumerable<Player> players)
         {
             return await Assign(0, players);
         }
 
-        public async Task<IEnumerable<Player>> Assign(int round, IEnumerable<Player> players)
+        public async Task<IEnumerable<Assignment>> Assign(int round, IEnumerable<Player> players)
         {
             IEnumerable<Driver> drivers = await Get(round);
 
@@ -49,13 +49,13 @@ namespace F1.Sweepstake.Domain.Services
                 return BitConverter.ToUInt32(bytes, 0);
             }));
 
-            List<Player> playerList = players.ToList();
-            for (int i = 0; i < playerList.Count; i++)
+            List<Assignment> assignments = players.Select(player => new Assignment {Player = player}).ToList();
+            for (int i = 0; i < assignments.Count; i++)
             {
-                playerList[i].Driver = driverList[i];
+                assignments[i].Driver = driverList[i];
             }
 
-            return playerList;
+            return assignments;
         }
     }
 }
