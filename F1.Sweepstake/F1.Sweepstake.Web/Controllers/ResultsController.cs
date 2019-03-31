@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using F1.Sweepstake.Domain.Models;
-using F1.Sweepstake.Domain.Models.Ergast;
 using F1.Sweepstake.Domain.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
-using Result = F1.Sweepstake.Domain.Models.Result;
 
 namespace F1.Sweepstake.Web.Controllers
 {
@@ -35,6 +32,13 @@ namespace F1.Sweepstake.Web.Controllers
         {
             var results = await _resultService.Get(round, assignments);
             return results.ToList();
+        }
+
+        // POST api/results/standings
+        [HttpPost("standings")]
+        public ActionResult<IEnumerable<Player>> Standings([FromBody] IEnumerable<Result> results)
+        {
+            return results.Select(result => result.Player).OrderByDescending(player => player.TotalPoints).ThenBy(player => player.TotalRetirements).ToList();
         }
     }
 }
