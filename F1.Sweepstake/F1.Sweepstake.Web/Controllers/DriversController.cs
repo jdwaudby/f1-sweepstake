@@ -22,7 +22,7 @@ namespace F1.Sweepstake.Web.Controllers
         [HttpPost("assign")]
         public async Task<ActionResult<IEnumerable<Assignment>>> Assign([FromBody] IEnumerable<Player> players)
         {
-            IEnumerable<Assignment> assignments = await _driverService.Assign(players);
+            var assignments = await _driverService.Assign(players);
             return assignments.ToList();
         }
 
@@ -30,7 +30,7 @@ namespace F1.Sweepstake.Web.Controllers
         [HttpPost("round/{round}/assign")]
         public async Task<ActionResult<IEnumerable<Assignment>>> Assign(int round, [FromBody] IEnumerable<Player> players)
         {
-            IEnumerable<Assignment> assignments = await _driverService.Assign(round, players);
+            var assignments = await _driverService.Assign(round, players);
             return assignments.ToList();
         }
     }
