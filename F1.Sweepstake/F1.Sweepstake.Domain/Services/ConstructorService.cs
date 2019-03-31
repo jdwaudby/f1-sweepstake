@@ -22,15 +22,14 @@ namespace F1.Sweepstake.Domain.Services
                 string driversJson = await Client.GetStringAsync($"current/{round}/constructors/{constructor.ConstructorId}/drivers.json");
                 IEnumerable<Driver> drivers = JsonConvert.DeserializeObject<Models.Ergast.RootObject>(driversJson).MRData.DriverTable.Drivers.Select(driver => new Driver
                 {
-                    DriverId = driver.DriverId,
-                    PermanentNumber = driver.PermanentNumber,
+                    DriverNumber = driver.PermanentNumber,
                     GivenName = driver.GivenName,
                     FamilyName = driver.FamilyName,
+                    Code = driver.Code
                 });
 
                 return new Constructor
                 {
-                    ConstructorId = constructor.ConstructorId,
                     Name = constructor.Name,
                     Drivers = drivers
                 };

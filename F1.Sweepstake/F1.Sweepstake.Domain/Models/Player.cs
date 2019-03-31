@@ -2,8 +2,6 @@
 {
     public class Player
     {
-        public int PlayerId { get; set; }
-        public int PlayerNumber { get; set; }
         public string Code { get; set; }
         public string GivenName { get; set; }
         public string FamilyName { get; set; }

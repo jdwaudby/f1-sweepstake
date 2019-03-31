@@ -3,10 +3,8 @@ using F1.Sweepstake.Domain.Services.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net.Http;
 using System.Security.Cryptography;
 using System.Threading.Tasks;
-using Newtonsoft.Json;
 
 namespace F1.Sweepstake.Domain.Services
 {
@@ -21,17 +19,6 @@ namespace F1.Sweepstake.Domain.Services
             _constructorService = constructorService;
         }
 
-        public async Task<IEnumerable<Driver>> Get()
-        {
-            return await Get(0);
-        }
-
-        public async Task<IEnumerable<Driver>> Get(int round)
-        {
-            IEnumerable<Constructor> constructors = await _constructorService.Get(round);
-            return constructors.SelectMany(constructor => constructor.Drivers);
-        }
-
         public async Task<IEnumerable<Assignment>> Assign(IEnumerable<Player> players)
         {
             return await Assign(0, players);
@@ -39,9 +26,9 @@ namespace F1.Sweepstake.Domain.Services
 
         public async Task<IEnumerable<Assignment>> Assign(int round, IEnumerable<Player> players)
         {
-            IEnumerable<Driver> drivers = await Get(round);
+            var drivers = await Get(round);
 
-            var driverList = new List<Driver>();
+            var driverList = new List<DriverConstructor>();
             driverList.AddRange(drivers.OrderBy(x =>
             {
                 var bytes = new byte[4];
@@ -49,13 +36,21 @@ namespace F1.Sweepstake.Domain.Services
                 return BitConverter.ToUInt32(bytes, 0);
             }));
 
-            List<Assignment> assignments = players.Select(player => new Assignment {Player = player}).ToList();
+            var assignments = players.Select(player => new Assignment {Player = player}).ToList();
             for (int i = 0; i < assignments.Count; i++)
             {
-                assignments[i].Driver = driverList[i];
+                assignments[i].Driver = driverList[i].Driver;
+                assignments[i].Constructor = driverList[i].Constructor;
             }
 
             return assignments;
+        }
+
+        private async Task<IEnumerable<DriverConstructor>> Get(int round)
+        {
+            return from constructor in await _constructorService.Get(round)
+                from driver in constructor.Drivers
+                select new DriverConstructor {Driver = driver, Constructor = constructor};
         }
     }
 }

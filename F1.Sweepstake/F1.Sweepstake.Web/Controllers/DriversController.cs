@@ -18,22 +18,6 @@ namespace F1.Sweepstake.Web.Controllers
             _driverService = driverService;
         }
 
-        // GET api/drivers
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<Driver>>> Get()
-        {
-            IEnumerable<Driver> drivers = await _driverService.Get();
-            return drivers.ToList();
-        }
-
-        // GET api/drivers/round/5
-        [HttpGet("round/{round}")]
-        public async Task<ActionResult<IEnumerable<Driver>>> Get(int round)
-        {
-            IEnumerable<Driver> drivers = await _driverService.Get(round);
-            return drivers.ToList();
-        }
-
         // POST api/drivers/assign
         [HttpPost("assign")]
         public async Task<ActionResult<IEnumerable<Assignment>>> Assign([FromBody] IEnumerable<Player> players)
