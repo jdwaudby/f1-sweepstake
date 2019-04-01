@@ -23,54 +23,60 @@ namespace F1.Sweepstake.Domain.Services
             return await Get(round.ToString(), assignments);
         }
 
-        private static async Task<IEnumerable<Models.Ergast.Result>> Get(string round)
+        private static async Task<IEnumerable<Result>> Get(string round)
         {
             string resultsJson = await Client.GetStringAsync($"current/{round}/results.json");
-            return JsonConvert.DeserializeObject<Models.Ergast.RootObject>(resultsJson).MRData.RaceTable.Races.SingleOrDefault()?.Results;
+            return JsonConvert.DeserializeObject<Models.Ergast.RootObject>(resultsJson).MRData.RaceTable.Races.SingleOrDefault()?.Results.Select(result => new Result
+            {
+                Driver = new Driver
+                {
+                    Code = result.Driver.Code,
+                    DriverNumber = result.Driver.PermanentNumber,
+                    GivenName = result.Driver.GivenName,
+                    FamilyName = result.Driver.FamilyName
+                },
+                Constructor = new Constructor
+                {
+                    Name = result.Constructor.Name
+                },
+                FastestLap = result.FastestLap.Rank == "1",
+                Finished = result.Status == "Finished" || result.Status.StartsWith("+"),
+                Points = Convert.ToInt32(result.Points),
+                Position = Convert.ToInt32(result.Position)
+            });
         }
 
         private static async Task<IEnumerable<Result>> Get(string round, IEnumerable<Assignment> assignments)
         {
-            List<Models.Ergast.Result> results = (await Get(round)).ToList();
+            assignments = assignments.ToList();
 
-            List<Result> localResults = assignments.Select(assignment => new Result
+            List<Result> results = (await Get(round)).ToList();
+            foreach (Result result in results)
             {
-                Player = assignment.Player,
-                Driver = assignment.Driver,
-                Constructor = assignment.Constructor
-            }).ToList();
+                result.Player = assignments.SingleOrDefault(assignment => assignment.Driver.DriverNumber == result.Driver.DriverNumber)?.Player;
 
-            foreach (Result localResult in localResults)
-            {
-                var driverResult = results.Where(result => result.Driver.PermanentNumber == localResult.Driver.DriverNumber).Select(result => new
-                {
-                    Finished = result.Status == "Finished" || result.Status.StartsWith("+"),
-                    Position = Convert.ToInt32(result.Position),
-                    FastestLap = result.FastestLap.Rank == "1",
-                    Points = Convert.ToInt32(result.Points)
-                }).SingleOrDefault();
-
-                if (driverResult == null)
-                {
-                    throw new NullReferenceException($"Could not find result for driver {localResult.Driver.DriverNumber}, {localResult.Driver.GivenName} {localResult.Driver.FamilyName}");
-                }
-
-                localResult.Finished = driverResult.Finished;
-                localResult.Position = driverResult.Position;
-                localResult.Points = driverResult.Points;
-                localResult.FastestLap = driverResult.FastestLap;
-
-                localResult.Player.TotalPoints += driverResult.Points;
-
-                if (driverResult.Finished)
+                if (result.Player == null)
                 {
                     continue;
                 }
 
-                localResult.Player.TotalRetirements += 1;
+                result.Player.TotalPoints += result.Points;
+
+                if (result.Finished)
+                {
+                    continue;
+                }
+
+                result.Player.TotalRetirements++;
             }
 
-            return localResults.OrderBy(result => result.Position);
+            List<Assignment> missing = assignments.Where(assignment => results.All(result => result.Player != assignment.Player)).ToList();
+            if (missing.Any())
+            {
+                throw new Exception($"Unable to determine results for {missing.Count} players.");
+            }
+
+            return results.OrderBy(result => result.Position);
         }
     }
 }
