@@ -31,9 +31,9 @@ namespace F1.Sweepstake.Domain.Services
 
         private static async Task<IEnumerable<Result>> Get(string round, IEnumerable<Assignment> assignments)
         {
-            var results = (await Get(round)).ToList();
+            List<Models.Ergast.Result> results = (await Get(round)).ToList();
 
-            var localResults = assignments.Select(assignment => new Result
+            List<Result> localResults = assignments.Select(assignment => new Result
             {
                 Player = assignment.Player,
                 Driver = assignment.Driver,
@@ -48,7 +48,12 @@ namespace F1.Sweepstake.Domain.Services
                     Position = Convert.ToInt32(result.Position),
                     FastestLap = result.FastestLap.Rank == "1",
                     Points = Convert.ToInt32(result.Points)
-                }).Single();
+                }).SingleOrDefault();
+
+                if (driverResult == null)
+                {
+                    throw new NullReferenceException($"Could not find result for driver {localResult.Driver.DriverNumber}, {localResult.Driver.GivenName} {localResult.Driver.FamilyName}");
+                }
 
                 localResult.Finished = driverResult.Finished;
                 localResult.Position = driverResult.Position;
@@ -65,7 +70,7 @@ namespace F1.Sweepstake.Domain.Services
                 localResult.Player.TotalRetirements += 1;
             }
 
-            return localResults.OrderByDescending(result => result.Position);
+            return localResults.OrderBy(result => result.Position);
         }
     }
 }
