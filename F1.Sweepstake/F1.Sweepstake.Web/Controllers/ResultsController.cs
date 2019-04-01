@@ -36,9 +36,9 @@ namespace F1.Sweepstake.Web.Controllers
 
         // POST api/results/standings
         [HttpPost("standings")]
-        public ActionResult<IEnumerable<Player>> Standings([FromBody] IEnumerable<Result> results)
+        public ActionResult<IEnumerable<Standing>> Standings([FromBody] IEnumerable<Result> results)
         {
-            return results.Select(result => result.Player).OrderByDescending(player => player.TotalPoints).ThenBy(player => player.TotalRetirements).ToList();
+            return results.Where(result => result.Player != null).Select(result => result.Player).OrderByDescending(player => player.TotalPoints).ThenBy(player => player.TotalRetirements).Select((player, index) => new Standing {Player = player, Rank = index + 1}).ToList();
         }
     }
 }
