@@ -14,4 +14,8 @@
     <ProjectReference Include="..\F1.Sweepstake.Domain\F1.Sweepstake.Domain.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Models\" />
+  </ItemGroup>
+
 </Project>
