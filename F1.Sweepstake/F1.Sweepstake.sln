@@ -5,7 +5,7 @@ VisualStudioVersion = 16.0.28705.295
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "F1.Sweepstake.Domain", "F1.Sweepstake.Domain\F1.Sweepstake.Domain.csproj", "{F6105E27-BE3D-4DB5-9949-45A87231CEDF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "F1.Sweepstake.Web", "F1.Sweepstake.Web\F1.Sweepstake.Web.csproj", "{D4CFC4FC-FCED-4E16-8AB7-226C0DC8DD58}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "F1.Sweepstake.Web", "F1.Sweepstake.Web\F1.Sweepstake.Web.csproj", "{D4CFC4FC-FCED-4E16-8AB7-226C0DC8DD58}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
