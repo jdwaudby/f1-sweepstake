@@ -15,5 +15,10 @@ namespace F1.Sweepstake.Web.Controllers
         {
             return View(assignments);
         }
+
+        public IActionResult Results([FromBody] IEnumerable<Result> results)
+        {
+            return View(results);
+        }
     }
 }

@@ -1,0 +1,32 @@
+﻿@using F1.Sweepstake.Domain.Models
+@model IEnumerable<Result>
+
+@{
+    ViewData["Title"] = "Race Results";
+}
+
+<h1>Race Results</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>#</th>
+            <th>Player</th>
+            <th>Driver</th>
+            <th>Constructor</th>
+            <th>Points</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (Result result in Model)
+        {
+            <tr class="@(result.Finished == false ? "table-danger" : "")">
+                <th scope="row">@result.Position @(result.FastestLap ? "🗲" : "")</th>
+                <td>@result.Player?.FamilyName.ToUpper() @result.Player?.GivenName</td>
+                <td>@result.Driver.DriverNumber @result.Driver.FamilyName.ToUpper() @result.Driver.GivenName</td>
+                <td>@result.Constructor.Name</td>
+                <td>@(result.Points > 0 ? result.Points.ToString() : "")</td>
+            </tr>
+        }
+    </tbody>
+</table>
