@@ -20,8 +20,8 @@
         {
         <tr>
             <td>@assignment.Player.FamilyName.ToUpper() @assignment.Player.GivenName</td>
-            <td>@assignment.Driver.DriverNumber @assignment.Driver.FamilyName.ToUpper() @assignment.Driver.GivenName</td>
-            <td>@assignment.Constructor.Name</td>
+            <td>@assignment.Driver?.DriverNumber @assignment.Driver?.FamilyName.ToUpper() @assignment.Driver?.GivenName</td>
+            <td>@assignment.Constructor?.Name</td>
         </tr>
         }
     </tbody>
