@@ -1,0 +1,28 @@
+﻿@using F1.Sweepstake.Domain.Models
+@model IEnumerable<Assignment>
+
+@{
+    ViewData["Title"] = "Driver Assignments";
+}
+
+<h1>Driver Assignments</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Player</th>
+            <th>Driver</th>
+            <th>Constructor</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (Assignment assignment in Model)
+        {
+        <tr>
+            <td>@assignment.Player.FamilyName.ToUpper() @assignment.Player.GivenName</td>
+            <td>@assignment.Driver.DriverNumber @assignment.Driver.FamilyName.ToUpper() @assignment.Driver.GivenName</td>
+            <td>@assignment.Constructor.Name</td>
+        </tr>
+        }
+    </tbody>
+</table>
