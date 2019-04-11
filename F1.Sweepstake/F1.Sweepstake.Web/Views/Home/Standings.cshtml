@@ -1,0 +1,30 @@
+﻿@using F1.Sweepstake.Domain.Models
+@model IEnumerable<Standing>
+
+@{
+    ViewData["Title"] = "Championship Standings";
+}
+
+<h1>Championship Standings</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>#</th>
+            <th>Player</th>
+            <th>Points</th>
+            <th>Retirements</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (Standing standing in Model)
+        {
+            <tr>
+                <th scope="row">@standing.Rank</th>
+                <td>@standing.Player.FamilyName.ToUpper() @standing.Player.GivenName</td>
+                <td>@standing.Player.TotalPoints</td>
+                <td>@standing.Player.TotalRetirements</td>
+            </tr>
+        }
+    </tbody>
+</table>

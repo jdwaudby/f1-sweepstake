@@ -20,5 +20,10 @@ namespace F1.Sweepstake.Web.Controllers
         {
             return View(results);
         }
+
+        public IActionResult Standings([FromBody] IEnumerable<Standing> standings)
+        {
+            return View(standings);
+        }
     }
 }
