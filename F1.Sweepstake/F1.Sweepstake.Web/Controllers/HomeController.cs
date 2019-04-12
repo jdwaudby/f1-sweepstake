@@ -27,7 +27,7 @@ namespace F1.Sweepstake.Web.Controllers
                 assignment.Constructor = null;
             }
 
-            return View(assignments);
+            return View(assignments.OrderBy(assignment => assignment.Player.Code));
         }
 
         public IActionResult Results([FromBody] IEnumerable<Result> results)
