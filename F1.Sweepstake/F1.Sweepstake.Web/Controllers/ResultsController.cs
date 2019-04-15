@@ -40,6 +40,7 @@ namespace F1.Sweepstake.Web.Controllers
         {
             return results.Where(result => result.Player != null)
                 .Select(result => result.Player)
+                .OrderByDescending(player => player.TotalPoints)
                 .GroupBy(player => player.TotalPoints)
                 .SelectMany((group, index) => group.Select(player => new Standing
                 {
