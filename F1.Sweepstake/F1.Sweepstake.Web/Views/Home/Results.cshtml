@@ -21,7 +21,7 @@
         @foreach (Result result in Model)
         {
             <tr class="@(result.Finished == false ? "table-danger" : "")">
-                <th scope="row">@result.Position @(result.FastestLap ? "🗲" : "")</th>
+                <th scope="row">@result.Position @(result.FastestLap ? "⏱" : "")</th>
                 <td>@result.Player?.FamilyName.ToUpper() @result.Player?.GivenName</td>
                 <td>@result.Driver.DriverNumber @result.Driver.FamilyName.ToUpper() @result.Driver.GivenName</td>
                 <td>@result.Constructor.Name</td>
