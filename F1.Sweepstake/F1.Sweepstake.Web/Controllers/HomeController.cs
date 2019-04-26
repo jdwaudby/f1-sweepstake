@@ -32,7 +32,15 @@ namespace F1.Sweepstake.Web.Controllers
 
         public IActionResult Results([FromBody] IEnumerable<Result> results)
         {
-            return View(results.Where(result => result.Player?.Code != Temp));
+            foreach (Result result in results)
+            {
+                if (result.Player?.Code == Temp)
+                {
+                    result.Player = null;
+                }
+            }
+
+            return View(results);
         }
 
         public IActionResult Standings([FromBody] IEnumerable<Standing> standings)
