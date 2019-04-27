@@ -7,5 +7,6 @@
         public string FamilyName { get; set; }
         public int TotalPoints { get; set; }
         public int TotalRetirements { get; set; }
+        public bool Hidden { get; set; }
     }
 }

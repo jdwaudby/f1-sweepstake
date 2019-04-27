@@ -7,8 +7,6 @@ namespace F1.Sweepstake.Web.Controllers
 {
     public class HomeController : Controller
     {
-        private const string Temp = "MCG";
-
         public IActionResult Index()
         {
             return View();
@@ -18,13 +16,8 @@ namespace F1.Sweepstake.Web.Controllers
         {
             assignments = assignments.ToList();
 
-            foreach (Assignment assignment in assignments)
+            foreach (Assignment assignment in assignments.Where(assignment => assignment.Player.Hidden))
             {
-                if (assignment.Player.Code != Temp)
-                {
-                    continue;
-                }
-
                 assignment.Driver = null;
                 assignment.Constructor = null;
             }
@@ -34,12 +27,9 @@ namespace F1.Sweepstake.Web.Controllers
 
         public IActionResult Results([FromBody] IEnumerable<Result> results)
         {
-            foreach (Result result in results)
+            foreach (Result result in results.Where(result => result.Player?.Hidden == true))
             {
-                if (result.Player?.Code == Temp)
-                {
-                    result.Player = null;
-                }
+                result.Player = null;
             }
 
             return View(results);
@@ -47,7 +37,7 @@ namespace F1.Sweepstake.Web.Controllers
 
         public IActionResult Standings([FromBody] IEnumerable<Standing> standings)
         {
-            return View(standings.Where(standing => standing.Player.Code != Temp));
+            return View(standings.Where(standing => !standing.Player.Hidden));
         }
     }
 }
