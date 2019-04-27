@@ -37,6 +37,18 @@ namespace F1.Sweepstake.Web.Controllers
 
         public IActionResult Standings([FromBody] IEnumerable<Standing> standings)
         {
+            standings = standings.ToList();
+
+            int temp = 0;
+            foreach (Standing standing in standings)
+            {
+                if (standing.Player.Hidden)
+                {
+                    temp++;
+                }
+                standing.Rank -= temp;
+            }
+
             return View(standings.Where(standing => !standing.Player.Hidden));
         }
     }
