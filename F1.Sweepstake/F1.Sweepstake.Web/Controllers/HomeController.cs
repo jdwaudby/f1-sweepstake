@@ -16,6 +16,8 @@ namespace F1.Sweepstake.Web.Controllers
 
         public IActionResult Assignments([FromBody] IEnumerable<Assignment> assignments)
         {
+            assignments = assignments.ToList();
+
             foreach (Assignment assignment in assignments)
             {
                 if (assignment.Player.Code != Temp)
