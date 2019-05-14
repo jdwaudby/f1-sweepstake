@@ -12,10 +12,8 @@ namespace F1.Sweepstake.Web.Controllers
             return View();
         }
 
-        public IActionResult Assignments([FromBody] IEnumerable<Assignment> assignments)
+        public IActionResult Assignments([FromBody] IList<Assignment> assignments)
         {
-            assignments = assignments.ToList();
-
             foreach (Assignment assignment in assignments.Where(assignment => assignment.Player.Hidden))
             {
                 assignment.Driver = null;
@@ -35,18 +33,19 @@ namespace F1.Sweepstake.Web.Controllers
             return View(results);
         }
 
-        public IActionResult Standings([FromBody] IEnumerable<Standing> standings)
+        public IActionResult Standings([FromBody] IList<Standing> standings)
         {
-            standings = standings.ToList();
-
             int temp = 0;
-            foreach (Standing standing in standings)
+            for (int i = 0; i < standings.Count; i++)
             {
-                if (standing.Player.Hidden)
+                if (standings[i].Player.Hidden &&
+                    i != standings.Count - 1 &&
+                    standings[i].Rank != standings[i + 1].Rank)
                 {
                     temp++;
                 }
-                standing.Rank -= temp;
+
+                standings[i].Rank -= temp;
             }
 
             return View(standings.Where(standing => !standing.Player.Hidden));
