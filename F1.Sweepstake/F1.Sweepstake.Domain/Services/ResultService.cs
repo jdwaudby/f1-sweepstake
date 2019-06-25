@@ -51,6 +51,20 @@ namespace F1.Sweepstake.Domain.Services
             assignments = assignments.ToList();
 
             List<Result> results = (await Get(round)).ToList();
+
+            if (round == "8" && results.All(result => result.Driver.DriverNumber != 8))
+            {
+                results.Add(new Result
+                {
+                    Driver = new Driver {DriverNumber = 8, Code = "GRO", FamilyName = "Grosjean", GivenName = "Romain"},
+                    Constructor = new Constructor {Name = "Haas F1 Team"},
+                    FastestLap = false,
+                    Finished = false,
+                    Points = 0,
+                    Position = 20
+                });
+            }
+
             foreach (Result result in results)
             {
                 result.Player = assignments.SingleOrDefault(assignment => assignment.Driver.DriverNumber == result.Driver.DriverNumber)?.Player;
