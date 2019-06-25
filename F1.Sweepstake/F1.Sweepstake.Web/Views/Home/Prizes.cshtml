@@ -1,0 +1,35 @@
+﻿@using F1.Sweepstake.Domain.Models
+@model List<Player>
+
+@{
+    ViewData["Title"] = "Top 3";
+}
+
+<h1>Race Top 3</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>#</th>
+            <th>Player</th>
+            <th>Prize Money</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <th scope="row">1</th>
+            <td>@Model[0].FamilyName.ToUpper() @Model[0].GivenName</td>
+            <td>£3</td>
+        </tr>
+        <tr>
+            <th scope="row">2</th>
+            <td>@Model[1].FamilyName.ToUpper() @Model[1].GivenName</td>
+            <td>£2</td>
+        </tr>
+        <tr>
+            <th scope="row">3</th>
+            <td>@Model[2].FamilyName.ToUpper() @Model[2].GivenName</td>
+            <td>£1</td>
+        </tr>
+    </tbody>
+</table>

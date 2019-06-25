@@ -33,6 +33,11 @@ namespace F1.Sweepstake.Web.Controllers
             return View(results);
         }
 
+        public IActionResult Prizes([FromBody] IEnumerable<Result> results)
+        {
+            return View(results.Where(result => result.Player != null && result.Player.Hidden == false).Select(result => result.Player).Take(3).ToList());
+        }
+
         public IActionResult Standings([FromBody] IList<Standing> standings)
         {
             int temp = 0;
