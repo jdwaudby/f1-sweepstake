@@ -72,7 +72,8 @@ namespace F1.Sweepstake.Domain.Services
                 }
             }
 
-            foreach (Result result in results)
+            decimal prizeFund = 6;
+            foreach (Result result in results.OrderBy(result => result.Position))
             {
                 result.Player = assignments.SingleOrDefault(assignment => assignment.Driver.DriverNumber == result.Driver.DriverNumber)?.Player;
 
@@ -82,6 +83,14 @@ namespace F1.Sweepstake.Domain.Services
                 }
 
                 result.Player.TotalPoints += result.Points;
+
+                if (prizeFund > 0)
+                {
+                    result.Winnings = (int) Math.Ceiling(prizeFund / 2);
+                    prizeFund -= result.Winnings;
+
+                    result.Player.TotalWinnings += result.Winnings;
+                }
 
                 if (result.Finished)
                 {
@@ -97,7 +106,7 @@ namespace F1.Sweepstake.Domain.Services
                 throw new Exception($"Unable to determine results for {missing.Count} players.");
             }
 
-            return results.OrderBy(result => result.Position);
+            return results;
         }
     }
 }

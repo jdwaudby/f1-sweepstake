@@ -9,5 +9,6 @@
         public bool Finished { get; set; }
         public bool FastestLap { get; set; }
         public int Points { get; set; }
+        public int Winnings { get; set; }
     }
 }
