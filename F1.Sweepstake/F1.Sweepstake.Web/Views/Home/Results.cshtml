@@ -15,6 +15,7 @@
             <th>Driver</th>
             <th>Constructor</th>
             <th>Points</th>
+            <th>Winnings</th>
         </tr>
     </thead>
     <tbody>
@@ -26,6 +27,7 @@
                 <td>@result.Driver.DriverNumber @result.Driver.FamilyName.ToUpper() @result.Driver.GivenName</td>
                 <td>@result.Constructor.Name</td>
                 <td>@(result.Points > 0 ? result.Points.ToString() : "")</td>
+                <td>@(result.Winnings > 0 ? result.Winnings.ToString("C0") : "")</td>
             </tr>
         }
     </tbody>

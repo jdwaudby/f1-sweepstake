@@ -14,6 +14,7 @@
             <th>Player</th>
             <th>Points</th>
             <th>Retirements</th>
+            <td>Winnings</td>
         </tr>
     </thead>
     <tbody>
@@ -24,6 +25,7 @@
                 <td>@standing.Player.FamilyName.ToUpper() @standing.Player.GivenName</td>
                 <td>@standing.Player.TotalPoints</td>
                 <td>@standing.Player.TotalRetirements</td>
+                <td>@standing.Player.TotalWinnings.ToString("C0")</td>
             </tr>
         }
     </tbody>
