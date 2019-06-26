@@ -64,7 +64,7 @@ namespace F1.Sweepstake.Domain.Services
 
                 result.Player.TotalPoints += result.Points;
 
-                if (prizeFund > 0)
+                if (prizeFund > 0 && !result.Player.Hidden)
                 {
                     result.Winnings = (int) Math.Ceiling(prizeFund / 2);
                     prizeFund -= result.Winnings;
