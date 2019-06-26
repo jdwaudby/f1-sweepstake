@@ -52,26 +52,6 @@ namespace F1.Sweepstake.Domain.Services
 
             List<Result> results = (await Get(round)).ToList();
 
-            if (round == "8")
-            {
-                if (results.All(result => result.Driver.DriverNumber != 8))
-                {
-                    results.Add(new Result
-                    {
-                        Driver = new Driver {DriverNumber = 8, Code = "GRO", FamilyName = "Grosjean", GivenName = "Romain"},
-                        Constructor = new Constructor {Name = "Haas F1 Team"},
-                        FastestLap = false,
-                        Finished = false,
-                        Points = 0,
-                        Position = 20
-                    });
-                }
-                else
-                {
-                    throw new Exception("Expected a missing result for driver 8");
-                }
-            }
-
             decimal prizeFund = 6;
             foreach (Result result in results.OrderBy(result => result.Position))
             {
