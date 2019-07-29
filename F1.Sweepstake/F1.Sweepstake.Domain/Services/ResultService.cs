@@ -39,7 +39,7 @@ namespace F1.Sweepstake.Domain.Services
                 {
                     Name = result.Constructor.Name
                 },
-                FastestLap = result.FastestLap.Rank == "1",
+                FastestLap = result.FastestLap != null && result.FastestLap.Rank == "1",
                 Finished = result.Status == "Finished" || result.Status.StartsWith("+"),
                 Points = Convert.ToInt32(result.Points),
                 Position = Convert.ToInt32(result.Position)
