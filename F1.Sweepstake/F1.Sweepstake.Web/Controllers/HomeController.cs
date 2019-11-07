@@ -36,16 +36,20 @@ namespace F1.Sweepstake.Web.Controllers
         public IActionResult Standings([FromBody] IList<Standing> standings)
         {
             int temp = 0;
+            int lastRank = 0;
             for (int i = 0; i < standings.Count; i++)
             {
-                if (standings[i].Player.Hidden &&
-                    i != standings.Count - 1 &&
-                    standings[i].Rank != standings[i + 1].Rank)
+                if (standings[i].Player.Hidden)
                 {
-                    temp++;
+                    int newRank = standings[i].Rank - temp;
+                    if (i + 1 < standings.Count && standings[i].Rank != standings[i + 1].Rank && newRank != lastRank)
+                    {
+                        temp++;
+                    }
                 }
 
                 standings[i].Rank -= temp;
+                lastRank = standings[i].Rank;
             }
 
             return View(standings.Where(standing => !standing.Player.Hidden));
