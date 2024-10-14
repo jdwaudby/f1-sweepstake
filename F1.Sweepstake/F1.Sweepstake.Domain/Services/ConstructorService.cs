@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 using F1.Sweepstake.Domain.Models;
 using F1.Sweepstake.Domain.Services.Interfaces;
-using Newtonsoft.Json;
 
 namespace F1.Sweepstake.Domain.Services
 {
@@ -17,10 +17,10 @@ namespace F1.Sweepstake.Domain.Services
         public async Task<IEnumerable<Constructor>> Get(int round)
         {
             string constructorsJson = await Client.GetStringAsync($"current/{round}/constructors.json");
-            IEnumerable<Task<Constructor>> constructors = JsonConvert.DeserializeObject<Models.Ergast.RootObject>(constructorsJson).MRData.ConstructorTable.Constructors.Select(async constructor =>
+            IEnumerable<Task<Constructor>> constructors = JsonSerializer.Deserialize<Models.Ergast.RootObject>(constructorsJson).MRData.ConstructorTable.Constructors.Select(async constructor =>
             {
                 string driversJson = await Client.GetStringAsync($"current/{round}/constructors/{constructor.ConstructorId}/drivers.json");
-                IEnumerable<Driver> drivers = JsonConvert.DeserializeObject<Models.Ergast.RootObject>(driversJson).MRData.DriverTable.Drivers.Select(driver => new Driver
+                IEnumerable<Driver> drivers = JsonSerializer.Deserialize<Models.Ergast.RootObject>(driversJson).MRData.DriverTable.Drivers.Select(driver => new Driver
                 {
                     DriverNumber = driver.PermanentNumber,
                     GivenName = driver.GivenName,

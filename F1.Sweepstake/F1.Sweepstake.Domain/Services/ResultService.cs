@@ -2,10 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using F1.Sweepstake.Domain.Models;
 using F1.Sweepstake.Domain.Services.Interfaces;
-using Newtonsoft.Json;
 
 namespace F1.Sweepstake.Domain.Services
 {
@@ -26,7 +27,8 @@ namespace F1.Sweepstake.Domain.Services
         private static async Task<IEnumerable<Result>> Get(string round)
         {
             string resultsJson = await Client.GetStringAsync($"current/{round}/results.json");
-            return JsonConvert.DeserializeObject<Models.Ergast.RootObject>(resultsJson).MRData.RaceTable.Races.SingleOrDefault()?.Results.Select(result => new Result
+            var results = JsonSerializer.Deserialize<Models.Ergast.RootObject>(resultsJson, new JsonSerializerOptions { PropertyNameCaseInsensitive = true, NumberHandling = JsonNumberHandling.AllowReadingFromString });
+            return results.MRData.RaceTable.Races.SingleOrDefault()?.Results.Select(result => new Result
             {
                 Driver = new Driver
                 {
@@ -66,7 +68,7 @@ namespace F1.Sweepstake.Domain.Services
 
                 if (prizeFund > 0 && !result.Player.Hidden)
                 {
-                    result.Winnings = (int) Math.Ceiling(prizeFund / 2);
+                    result.Winnings = (int)Math.Ceiling(prizeFund / 2);
                     prizeFund -= result.Winnings;
 
                     result.Player.TotalWinnings += result.Winnings;
