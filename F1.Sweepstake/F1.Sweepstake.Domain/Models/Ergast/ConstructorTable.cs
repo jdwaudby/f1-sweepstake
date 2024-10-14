@@ -1,9 +1,8 @@
 ﻿using System.Collections.Generic;
 
-namespace F1.Sweepstake.Domain.Models.Ergast
+namespace F1.Sweepstake.Domain.Models.Ergast;
+
+public class ConstructorTable
 {
-    public class ConstructorTable
-    {
-        public List<Constructor> Constructors { get; set; }
-    }
+    public List<Constructor> Constructors { get; set; }
 }

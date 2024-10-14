@@ -1,11 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.28705.295
+# Visual Studio Version 17
+VisualStudioVersion = 17.11.35327.3
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "F1.Sweepstake.Domain", "F1.Sweepstake.Domain\F1.Sweepstake.Domain.csproj", "{F6105E27-BE3D-4DB5-9949-45A87231CEDF}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "F1.Sweepstake.Web", "F1.Sweepstake.Web\F1.Sweepstake.Web.csproj", "{D4CFC4FC-FCED-4E16-8AB7-226C0DC8DD58}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "F1.Sweepstake.Web", "F1.Sweepstake.Web\F1.Sweepstake.Web.csproj", "{68D10C77-E889-42F6-A622-139C505F5A2A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -17,10 +17,10 @@ Global
 		{F6105E27-BE3D-4DB5-9949-45A87231CEDF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F6105E27-BE3D-4DB5-9949-45A87231CEDF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F6105E27-BE3D-4DB5-9949-45A87231CEDF}.Release|Any CPU.Build.0 = Release|Any CPU
-		{D4CFC4FC-FCED-4E16-8AB7-226C0DC8DD58}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{D4CFC4FC-FCED-4E16-8AB7-226C0DC8DD58}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{D4CFC4FC-FCED-4E16-8AB7-226C0DC8DD58}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{D4CFC4FC-FCED-4E16-8AB7-226C0DC8DD58}.Release|Any CPU.Build.0 = Release|Any CPU
+		{68D10C77-E889-42F6-A622-139C505F5A2A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{68D10C77-E889-42F6-A622-139C505F5A2A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{68D10C77-E889-42F6-A622-139C505F5A2A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{68D10C77-E889-42F6-A622-139C505F5A2A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
