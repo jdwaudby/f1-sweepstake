@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
-using System.Text;
 using System.Text.Json;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using F1.Sweepstake.Domain.Models;
 using F1.Sweepstake.Domain.Services.Interfaces;
@@ -20,7 +20,7 @@ namespace F1.Sweepstake.Domain.Services
             IEnumerable<Task<Constructor>> constructors = JsonSerializer.Deserialize<Models.Ergast.RootObject>(constructorsJson).MRData.ConstructorTable.Constructors.Select(async constructor =>
             {
                 string driversJson = await Client.GetStringAsync($"current/{round}/constructors/{constructor.ConstructorId}/drivers.json");
-                IEnumerable<Driver> drivers = JsonSerializer.Deserialize<Models.Ergast.RootObject>(driversJson).MRData.DriverTable.Drivers.Select(driver => new Driver
+                IEnumerable<Driver> drivers = JsonSerializer.Deserialize<Models.Ergast.RootObject>(driversJson, new JsonSerializerOptions { PropertyNameCaseInsensitive = true, NumberHandling = JsonNumberHandling.AllowReadingFromString }).MRData.DriverTable.Drivers.Select(driver => new Driver
                 {
                     DriverNumber = driver.PermanentNumber,
                     GivenName = driver.GivenName,
