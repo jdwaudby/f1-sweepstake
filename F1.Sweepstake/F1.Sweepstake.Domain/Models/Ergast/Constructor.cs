@@ -1,8 +1,7 @@
-﻿namespace F1.Sweepstake.Domain.Models.Ergast
+﻿namespace F1.Sweepstake.Domain.Models.Ergast;
+
+public class Constructor
 {
-    public class Constructor
-    {
-        public string ConstructorId { get; set; }
-        public string Name { get; set; }
-    }
+    public string ConstructorId { get; set; }
+    public string Name { get; set; }
 }
