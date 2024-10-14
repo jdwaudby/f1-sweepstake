@@ -12,8 +12,6 @@ namespace F1.Sweepstake.Domain.Services
     {
         private readonly IConstructorService _constructorService;
 
-        private static readonly RNGCryptoServiceProvider Provider = new RNGCryptoServiceProvider();
-
         public DriverService(IConstructorService constructorService)
         {
             _constructorService = constructorService;
@@ -26,13 +24,14 @@ namespace F1.Sweepstake.Domain.Services
 
         public async Task<IEnumerable<Assignment>> Assign(int round, IEnumerable<Player> players)
         {
+            using var rng = RandomNumberGenerator.Create();
             var drivers = await Get(round);
 
             var driverList = new List<DriverConstructor>();
             driverList.AddRange(drivers.OrderBy(x =>
             {
                 var bytes = new byte[4];
-                Provider.GetBytes(bytes);
+                rng.GetBytes(bytes);
                 return BitConverter.ToUInt32(bytes, 0);
             }));
 
